@@ -32,6 +32,7 @@ def main():
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				print(f"Score: {player.score}")
 				return
 
 		for obj in updatable:
@@ -40,11 +41,13 @@ def main():
 		for asteroid in asteroids:
 			if asteroid.isColliding(player):
 				print("Game over!")
+				print(f"Score: {player.score}")
 				sys.exit()
 			for shot in shots:
 				if asteroid.isColliding(shot):
 					asteroid.split()
 					shot.kill()
+					player.score += 1
 
 		screen.fill("black")
 
