@@ -1,5 +1,8 @@
 import sys
 import pygame
+import pygame_menu
+from pygame_menu import themes
+from time import sleep
 from constants import *
 from player import Player
 from asteroid import Asteroid
