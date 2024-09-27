@@ -2,7 +2,8 @@ import pygame
 from constants import *
 from circleshape import CircleShape
 from shot import Shot
-
+pygame.font.init()
+font = pygame.font.SysFont(name=pygame.font.get_default_font(), size=32)
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -15,6 +16,8 @@ class Player(CircleShape):
 
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        score_text = font.render(f"Score: {self.score}", 1, "white")
+        screen.blit(score_text, (SCREEN_WIDTH / 2 - score_text.get_width() / 2, 10))
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -44,6 +47,10 @@ class Player(CircleShape):
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        if self.position.x + forward.x * PLAYER_SPEED * dt < 0 or self.position.x + forward.x * PLAYER_SPEED * dt > SCREEN_WIDTH:
+            return
+        if self.position.y + forward.y * PLAYER_SPEED * dt < 0 or self.position.y + forward.y * PLAYER_SPEED * dt > SCREEN_HEIGHT:
+            return
         self.position += forward * PLAYER_SPEED * dt
 
     def shoot(self):
