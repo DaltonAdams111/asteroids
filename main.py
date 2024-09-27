@@ -8,11 +8,13 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+pygame.font.init()
 
 def main():
 	pygame.init()
 	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 	clock = pygame.time.Clock()
+	font = pygame.font.SysFont(name=pygame.font.get_default_font(), size=32)
 
 	updatable = pygame.sprite.Group()
 	drawable = pygame.sprite.Group()
@@ -32,6 +34,7 @@ def main():
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				print("Game closed")
 				print(f"Score: {player.score}")
 				return
 
@@ -50,9 +53,10 @@ def main():
 					player.score += 1
 
 		screen.fill("black")
-
 		for obj in drawable:
 			obj.draw(screen)
+		score_text = font.render(f"Score: {player.score}", 1, "white")
+		screen.blit(score_text, (SCREEN_WIDTH / 2 - score_text.get_width() / 2, 10))
 
 		pygame.display.flip()
 
