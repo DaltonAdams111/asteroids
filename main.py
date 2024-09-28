@@ -46,6 +46,8 @@ def main():
 				sys.exit()
 			for shot in shots:
 				if asteroid.isColliding(shot):
+					if not asteroid.withinScreen():
+						continue
 					asteroid.split()
 					shot.kill()
 					player.score += 1

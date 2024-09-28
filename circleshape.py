@@ -1,4 +1,5 @@
 import pygame
+from constants import *
 
 class CircleShape(pygame.sprite.Sprite):
 	def __init__(self, x, y, radius):
@@ -19,3 +20,9 @@ class CircleShape(pygame.sprite.Sprite):
 
 	def isColliding(self, target):
 		return self.position.distance_to(target.position) < self.radius + target.radius
+	
+	def withinBounds(self):
+		return (-SCREEN_WIDTH / 2 < self.position.x < SCREEN_WIDTH * 1.5 and -SCREEN_HEIGHT / 2 < self.position.y < SCREEN_HEIGHT * 1.5)
+	
+	def withinScreen(self):
+		return (0 < self.position.x < SCREEN_WIDTH and 0 < self.position.y < SCREEN_HEIGHT)
