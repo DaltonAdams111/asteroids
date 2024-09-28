@@ -3,17 +3,27 @@ import pygame
 import pygame_menu
 from pygame_menu import themes
 from time import sleep
+
+import pygame_menu.events
+import pygame_menu.menu
+import pygame_menu.themes
 from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 
-def main():
-	pygame.init()
-	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-	clock = pygame.time.Clock()
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+clock = pygame.time.Clock()
 
+difficulty = 1
+def set_difficulty(selected, value):
+	global difficulty
+	difficulty = value
+	print(f"Difficulty: {selected[0][0]}, Value: {selected[0][1]}")
+
+def start_game():
 	updatable = pygame.sprite.Group()
 	drawable = pygame.sprite.Group()
 	asteroids = pygame.sprite.Group()
@@ -25,7 +35,7 @@ def main():
 	Shot.containers = (shots, updatable, drawable)
 
 	player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-	asteroidfield = AsteroidField()
+	asteroidfield = AsteroidField(difficulty)
 
 	dt = 0
 
@@ -41,9 +51,7 @@ def main():
 
 		for asteroid in asteroids:
 			if asteroid.isColliding(player):
-				print("Game over!")
-				print(f"Score: {player.score}")
-				sys.exit()
+				main_menu.mainloop(screen)
 			for shot in shots:
 				if asteroid.isColliding(shot):
 					if not asteroid.withinScreen():
@@ -60,5 +68,11 @@ def main():
 
 		dt = clock.tick(60) / 1000
 
+main_menu = pygame_menu.menu.Menu("Main Menu", SCREEN_WIDTH, SCREEN_HEIGHT, theme=pygame_menu.themes.THEME_DARK)
+main_menu.add.text_input("Name: ", default="ZZZ", maxchar=3)
+main_menu.add.selector("Difficulty: ", [("EASY", 2.0), ("MEDIUM", 1.0), ("HARD", 0.5)], onchange=set_difficulty)
+main_menu.add.button("Play", start_game)
+main_menu.add.button("Quit", pygame_menu.events.EXIT)
+
 if __name__ == "__main__":
-    main()
+	main_menu.mainloop(screen)

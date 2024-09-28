@@ -12,9 +12,10 @@ class AsteroidField(pygame.sprite.Sprite):
 	[pygame.Vector2(0, -1), lambda x: pygame.Vector2(x * SCREEN_WIDTH, SCREEN_HEIGHT + ASTEROID_MAX_RADIUS),],
 	]
 
-	def __init__(self):
+	def __init__(self, difficulty):
 		pygame.sprite.Sprite.__init__(self, self.containers)
 		self.spawn_timer = 0.0
+		self.difficulty = difficulty
 
 	def spawn(self, radius, position, velocity):
 		asteroid = Asteroid(position.x, position.y, radius)
@@ -22,7 +23,7 @@ class AsteroidField(pygame.sprite.Sprite):
 
 	def update(self, dt):
 		self.spawn_timer += dt
-		if self.spawn_timer > ASTEROID_SPAWN_RATE:
+		if self.spawn_timer > ASTEROID_SPAWN_RATE * self.difficulty:
 			self.spawn_timer = 0
 		else:
 			return
