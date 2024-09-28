@@ -47,9 +47,7 @@ class Player(CircleShape):
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        if self.position.x + forward.x * PLAYER_SPEED * dt < 0 or self.position.x + forward.x * PLAYER_SPEED * dt > SCREEN_WIDTH:
-            return
-        if self.position.y + forward.y * PLAYER_SPEED * dt < 0 or self.position.y + forward.y * PLAYER_SPEED * dt > SCREEN_HEIGHT:
+        if not 0 <= (self.position.x + forward.x * PLAYER_SPEED * dt) <= SCREEN_WIDTH or not 0 <= (self.position.y + forward.y * PLAYER_SPEED * dt) <= SCREEN_HEIGHT:
             return
         self.position += forward * PLAYER_SPEED * dt
 
