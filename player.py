@@ -6,7 +6,7 @@ pygame.font.init()
 font = pygame.font.SysFont(name=pygame.font.get_default_font(), size=32)
 
 class Player(CircleShape):
-    def __init__(self, x, y):
+    def __init__(self, x, y, name):
         super().__init__(x, y, PLAYER_RADIUS)
         self.position = pygame.Vector2(x, y)
         self.new_position = pygame.Vector2(0,0)
@@ -14,6 +14,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.shoot_timer = 0
         self.score = 0
+        self.name = name
 
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
